@@ -7,14 +7,16 @@ export default {
 	input: "src/index.ts",
 	output: [
 		{
-			file: "dist/index.cjs.js",
+			file: "dist/index.cjs",
 			format: "cjs",
 			sourcemap: true,
+			inlineDynamicImports: true,
 		},
 		{
 			file: "dist/index.esm.js",
 			format: "esm",
 			sourcemap: true,
+			inlineDynamicImports: true,
 		},
 	],
 	plugins: [

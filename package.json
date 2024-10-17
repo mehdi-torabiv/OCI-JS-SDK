@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "rollup -c",
-		"start": "node dist/index.cjs.js",
+		"start": "node dist/index.cjs",
 		"test": "jest",
 		"doc": "typedoc",
 		"lint": "pnpm biome check .",
@@ -38,6 +38,7 @@
 	},
 	"dependencies": {
 		"@ethereum-attestation-service/eas-sdk": "^2.7.0",
+		"dotenv": "^16.4.5",
 		"viem": "^2.21.27"
 	}
 }

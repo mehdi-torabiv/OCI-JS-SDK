@@ -11,6 +11,9 @@ importers:
       '@ethereum-attestation-service/eas-sdk':
         specifier: ^2.7.0
         version: 2.7.0(typescript@5.6.3)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       viem:
         specifier: ^2.21.27
         version: 2.21.27(typescript@5.6.3)
@@ -1189,6 +1192,10 @@ packages:
   diff@5.2.0:
     resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
     engines: {node: '>=0.3.1'}
+
+  dotenv@16.4.5:
+    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+    engines: {node: '>=12'}
 
   ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
@@ -4001,6 +4008,8 @@ snapshots:
   diff-sequences@29.6.3: {}
 
   diff@5.2.0: {}
+
+  dotenv@16.4.5: {}
 
   ejs@3.1.10:
     dependencies:
