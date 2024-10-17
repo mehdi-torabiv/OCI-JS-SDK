@@ -1,7 +1,11 @@
 import type { SchemaDecodedItem } from "@ethereum-attestation-service/eas-sdk";
-import { attester, schemaId } from "../../configs";
-import chainIdToGraphQLEndpoint from "../../configs/graphqlEndpoints";
-import { getHashedId } from "../../helpers";
+import type { Address } from "viem";
+import { hashAccountId } from "../../helpers";
+import {
+	attester,
+	chainIdToGraphQLEndpoint,
+	schemaId,
+} from "../../lib/constants";
 import { FetchService } from "../fetchService";
 
 /**
@@ -29,30 +33,31 @@ export class AttestationService {
 	/**
 	 * Fetches all attestations for a given recipient's wallet address.
 	 * @param recipient - The wallet address of the recipient.
-	 * @returns A promise that resolves to an array of attestations containing the decoded data JSON and the raw data.
-	 * @throws Will throw an error if no attestations are found for the specified recipient.
+	 * @returns A promise that resolves to an array of attestations containing the attestation ID, decoded data JSON, and raw data.
+	 * @throws Will throw an error if no attestations are found for the specified recipient or if the request fails.
 	 */
 	public async fetchAttestationsByRecipient(
 		recipient: string,
-	): Promise<{ decodedDataJson: string; data: string }[]> {
+	): Promise<{ id: Address; decodedDataJson: string; data: string }[]> {
 		const query = `
-      query GetAttestations(
-        $attester: String!
-        $schemaId: String!
-        $recipient: String!
-      ) {
-        attestations(
-          where: {
-            attester: { equals: $attester }
-            schemaId: { equals: $schemaId }
-            revocationTime: { equals: 0 }
-            decodedDataJson: { contains: $recipient }
-          }
-        ) {
-          decodedDataJson
-          data
-        }
-      }`;
+	  query GetAttestations(
+		$attester: String!
+		$schemaId: String!
+		$recipient: String!
+	  ) {
+		attestations(
+		  where: {
+			attester: { equals: $attester }
+			schemaId: { equals: $schemaId }
+			revocationTime: { equals: 0 }
+			decodedDataJson: { contains: $recipient }
+		  }
+		) {
+		  id
+		  decodedDataJson
+		  data
+		}
+	  }`;
 
 		const variables = {
 			attester,
@@ -60,16 +65,27 @@ export class AttestationService {
 			recipient,
 		};
 
-		const responseBody = await this.fetchService.post<{
-			data: { attestations: { decodedDataJson: string; data: string }[] };
-		}>(this.graphqlEndpoint, { query, variables });
+		try {
+			const responseBody = await this.fetchService.post<{
+				data: {
+					attestations: {
+						id: Address;
+						decodedDataJson: string;
+						data: string;
+					}[];
+				};
+			}>(this.graphqlEndpoint, { query, variables });
 
-		const attestations = responseBody.data.attestations;
-		if (!attestations || attestations.length === 0) {
-			throw new Error("No attestations found for the given wallet address");
+			const attestations = responseBody.data.attestations;
+			if (!attestations || attestations.length === 0) {
+				throw new Error("No attestations found for the given wallet address");
+			}
+
+			return attestations;
+		} catch (error) {
+			console.error("Error fetching attestations:", error);
+			throw new Error("Failed to fetch attestations. Please try again later.");
 		}
-
-		return attestations;
 	}
 
 	/**
@@ -83,7 +99,7 @@ export class AttestationService {
 		accountId: string,
 		provider: string,
 	): Promise<string | null> {
-		const hashedId = getHashedId(accountId);
+		const hashedId = hashAccountId(accountId);
 
 		const query = `
       query Attestations(
