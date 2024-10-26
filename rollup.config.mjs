@@ -21,8 +21,8 @@ export default {
 	],
 	plugins: [
 		resolve({
-			browser: true,
-			preferBuiltins: false,
+			browser: false,
+			preferBuiltins: true,
 		}),
 		commonjs(),
 		typescript({

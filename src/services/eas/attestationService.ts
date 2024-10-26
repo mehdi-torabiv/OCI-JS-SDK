@@ -1,7 +1,11 @@
-import type { SchemaDecodedItem } from "@ethereum-attestation-service/eas-sdk";
+import {
+	type SchemaDecodedItem,
+	SchemaEncoder,
+} from "@ethereum-attestation-service/eas-sdk";
 import type { Address } from "viem";
 import { hashAccountId } from "../../helpers";
 import {
+	SCHEMA_TYPES,
 	attester,
 	chainIdToGraphQLEndpoint,
 	schemaId,
@@ -217,5 +221,15 @@ export class AttestationService {
 			);
 			return null;
 		}
+	}
+
+	/**
+	 * Decodes schema-encoded attestation data.
+	 * @param data - The attestation data string to decode.
+	 * @returns {SchemaDecodedItem[]} - The decoded attestation items.
+	 */
+	decodeAttestationSchemaData(data: string): SchemaDecodedItem[] {
+		const schemaEncoder = new SchemaEncoder(SCHEMA_TYPES);
+		return schemaEncoder.decodeData(data);
 	}
 }
