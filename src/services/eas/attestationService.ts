@@ -228,7 +228,7 @@ export class AttestationService {
 	 * @param data - The attestation data string to decode.
 	 * @returns {SchemaDecodedItem[]} - The decoded attestation items.
 	 */
-	decodeAttestationSchemaData(data: string): SchemaDecodedItem[] {
+	public decodeAttestationSchemaData(data: string): SchemaDecodedItem[] {
 		const schemaEncoder = new SchemaEncoder(SCHEMA_TYPES);
 		return schemaEncoder.decodeData(data);
 	}
