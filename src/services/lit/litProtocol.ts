@@ -16,18 +16,27 @@ import {
 } from "../../lib/constants/lit";
 import type { EthersUtilsService } from "../ethers";
 
+/**
+ * Class for interacting with the Lit Protocol, enabling network connection,
+ * session signature generation, and data decryption.
+ */
 export class LitProtocol {
 	private litNodeClient: LitNodeClientNodeJs | null = null;
 	private network: LitNetwork | undefined;
 
+	/**
+	 * Initializes a new instance of the LitProtocol class.
+	 * @param ethersUtilsService - An instance of EthersUtilsService for creating signers.
+	 */
 	constructor(private readonly ethersUtilsService: EthersUtilsService) {
 		console.log("LitProtocol initialized");
 	}
 
 	/**
-	 * Maps chainId to the appropriate LitNetwork
-	 * @param chainId - The chainId to map to a LitNetwork
-	 * @returns LitNetwork or undefined
+	 * Maps a chainId to the appropriate LitNetwork.
+	 * @param chainId - The chainId to map to a LitNetwork.
+	 * @returns The LitNetwork corresponding to the chainId, or throws an error if none is found.
+	 * @throws Will throw an error if no matching LitNetwork is found for the specified chainId.
 	 */
 	private chainIdToLitNetwork(chainId: SupportedChainId): LitNetwork {
 		if (SUPPORTED_CHAINS.includes(chainId)) {
@@ -35,7 +44,6 @@ export class LitProtocol {
 			return networks[networkName].clientConfig.litNetwork;
 		}
 
-		// Fallback to LIT_CHAINS lookup
 		for (const [name, chain] of Object.entries(LIT_CHAINS)) {
 			if (chain.chainId === chainId) {
 				return name as LitNetwork;
@@ -46,8 +54,10 @@ export class LitProtocol {
 	}
 
 	/**
-	 * Maps chainId to LitChain (used in session signature generation)
-	 * @param chainId - The chainId to map to a LitChain
+	 * Maps a chainId to the corresponding LitChain name.
+	 * @param chainId - The chainId to map to a LitChain.
+	 * @returns The LitChain name as a string.
+	 * @throws Will throw an error if no matching chain is found for the specified chainId.
 	 */
 	private chainIdToLitChainName(chainId: SupportedChainId): string {
 		for (const [name, chain] of Object.entries(LIT_CHAINS)) {
@@ -59,34 +69,40 @@ export class LitProtocol {
 	}
 
 	/**
-	 * Determines the network name based on chainId
-	 * @param chainId - The chainId to determine the network name
-	 * @returns The network name ("datil-dev" or "datil-test")
+	 * Determines the network name based on the chainId.
+	 * @param chainId - The chainId to determine the network name for.
+	 * @returns The network name as "datil-dev" or "datil-test".
 	 */
 	private getNetworkName(chainId: SupportedChainId): keyof typeof networks {
 		return chainId === 11155111 ? "datil-dev" : "datil-test";
 	}
 
 	/**
-	 * Generates the network configuration based on chainId
-	 * @param chainId - The chainId to generate the config for
-	 * @returns The network configuration object
+	 * Retrieves the network configuration for a specified chainId.
+	 * @param chainId - The chainId to generate the config for.
+	 * @returns The network configuration object.
 	 */
 	private getNetworkConfig(chainId: SupportedChainId) {
 		const networkName = this.getNetworkName(chainId);
 		return networks[networkName].clientConfig;
 	}
 
+	/**
+	 * Retrieves the RPC URL for a specified chainId.
+	 * @param chainId - The chainId to retrieve the RPC URL for.
+	 * @returns The RPC URL as a string.
+	 */
 	private getNetworkRpc(chainId: SupportedChainId) {
 		const networkName = this.getNetworkName(chainId);
 		return networks[networkName].rpc;
 	}
 
 	/**
-	 * Connects to the Lit Network based on the provided chainId
-	 * @param chainId - The chainId to connect to
+	 * Connects to the Lit Network based on the specified chainId.
+	 * @param chainId - The chainId to connect to.
+	 * @throws Will throw an error if the connection to the Lit Network fails.
 	 */
-	async connect(chainId: SupportedChainId) {
+	public async connect(chainId: SupportedChainId) {
 		this.network = this.chainIdToLitNetwork(chainId);
 
 		if (!this.network) {
@@ -106,9 +122,10 @@ export class LitProtocol {
 	}
 
 	/**
-	 * Disconnects from the Lit Network
+	 * Disconnects from the Lit Network.
+	 * @throws Will throw an error if disconnection fails.
 	 */
-	async disconnect() {
+	public async disconnect() {
 		if (this.litNodeClient) {
 			try {
 				await this.litNodeClient.disconnect();
@@ -126,9 +143,13 @@ export class LitProtocol {
 	}
 
 	/**
-	 * Generates session signatures via AuthSig for the given chainId and private key
+	 * Generates session signatures via AuthSig for the given chainId and private key.
+	 * @param chainId - The chainId for generating the session signatures.
+	 * @param privateKey - The private key to use for signing the session signature.
+	 * @returns The session signatures generated via AuthSig.
+	 * @throws Will throw an error if the LitNodeClient is not initialized or if the network is not connected.
 	 */
-	async getSessionSigsViaAuthSig(
+	public async getSessionSigsViaAuthSig(
 		chainId: SupportedChainId,
 		privateKey: `0x${string}`,
 	) {
@@ -137,7 +158,6 @@ export class LitProtocol {
 		}
 
 		const networkRpc = this.getNetworkRpc(chainId);
-
 		const signer = this.ethersUtilsService.getSigner(networkRpc, privateKey);
 
 		const expiration = new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString();
@@ -185,7 +205,15 @@ export class LitProtocol {
 		});
 	}
 
-	async decryptAttestationFromJson(
+	/**
+	 * Decrypts JSON data using the Lit Protocol session signatures.
+	 * @param chainId - The chainId for the decryption process.
+	 * @param privateKey - The private key to use for generating session signatures.
+	 * @param secret - The encrypted data in JSON format to be decrypted.
+	 * @returns The decrypted data.
+	 * @throws Will throw an error if decryption fails or the LitNodeClient is not initialized.
+	 */
+	public async decryptAttestationFromJson(
 		chainId: SupportedChainId,
 		privateKey: `0x${string}`,
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -212,6 +240,7 @@ export class LitProtocol {
 			});
 		} catch (error) {
 			console.log("Error decrypting from JSON", error);
+			throw new Error("Failed to decrypt JSON data");
 		}
 	}
 }

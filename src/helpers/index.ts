@@ -18,3 +18,14 @@ export function hashAccountId(accountId: string) {
 export function getAccountFromPrivateKey(privateKey: string) {
 	return privateKeyToAccount(privateKey as `0x${string}`);
 }
+
+/**
+ * Convert a `Uint8Array` into a JSON object.
+ * @param data - The `Uint8Array` to be converted into a JSON object.
+ * @returns The parsed JSON object from the provided `Uint8Array`.
+ * @throws Will throw an error if the `Uint8Array` cannot be parsed as valid JSON.
+ */
+export function convertUnit8ArrayToJson(data: Uint8Array) {
+	const jsonString = Buffer.from(data).toString("utf8");
+	return JSON.parse(jsonString);
+}
