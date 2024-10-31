@@ -39,6 +39,9 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.3
         version: 1.9.3
+      '@rollup/plugin-alias':
+        specifier: ^5.1.1
+        version: 5.1.1(rollup@4.24.0)
       '@rollup/plugin-commonjs':
         specifier: ^28.0.0
         version: 28.0.0(rollup@4.24.0)
@@ -815,6 +818,15 @@ packages:
   '@parcel/watcher@2.4.1':
     resolution: {integrity: sha512-HNjmfLQEVRZmHRET336f20H/8kOozUGwk7yajvsonjNxbj2wBTK1WsQuHkD5yYh9RxFGL2EyDHryOihOwUoKDA==}
     engines: {node: '>= 10.0.0'}
+
+  '@rollup/plugin-alias@5.1.1':
+    resolution: {integrity: sha512-PR9zDb+rOzkRb2VD+EuKB7UC41vU5DIwZ5qqCpk0KJudcWAyi8rvYOhS7+L5aZCspw1stTViLgN5v6FF1p5cgQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/plugin-commonjs@28.0.0':
     resolution: {integrity: sha512-BJcu+a+Mpq476DMXG+hevgPSl56bkUoi88dKT8t3RyUp8kGuOh+2bU8Gs7zXDlu+fyZggnJ+iOBGrb/O1SorYg==}
@@ -5052,6 +5064,10 @@ snapshots:
       '@parcel/watcher-win32-arm64': 2.4.1
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
+
+  '@rollup/plugin-alias@5.1.1(rollup@4.24.0)':
+    optionalDependencies:
+      rollup: 4.24.0
 
   '@rollup/plugin-commonjs@28.0.0(rollup@4.24.0)':
     dependencies:

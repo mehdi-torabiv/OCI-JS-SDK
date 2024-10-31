@@ -1,1 +1,1 @@
-export { default as fetchService } from "./fetchService";
+export { default as fetchService } from "@/services/fetch/fetchService";

@@ -1,3 +1,2 @@
-import OciClient from "./ociClientService";
-export { OciClient };
+export { default as ociClient } from "@/services/oci/ociClientService";
 export * from "./types";

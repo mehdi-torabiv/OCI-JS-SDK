@@ -9,7 +9,11 @@
 		"skipLibCheck": true,
 		"moduleResolution": "node",
 		"lib": ["ESNext", "DOM"],
-		"sourceMap": true
+		"sourceMap": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
 	},
 	"include": ["src"],
 	"exclude": ["node_modules", "**/*.test.ts"]

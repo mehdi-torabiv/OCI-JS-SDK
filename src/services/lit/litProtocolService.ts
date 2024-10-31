@@ -1,4 +1,10 @@
 import {
+	SUPPORTED_CHAINS,
+	type SupportedChainId,
+	networks,
+} from "@/lib/constants/lit";
+import type EthersUtilsService from "@/services/ethers/ethersUtilsService";
+import {
 	LitAbility,
 	LitAccessControlConditionResource,
 	createSiweMessage,
@@ -9,12 +15,6 @@ import {
 	LitNodeClientNodeJs,
 	decryptFromJson,
 } from "@lit-protocol/lit-node-client-nodejs";
-import {
-	SUPPORTED_CHAINS,
-	type SupportedChainId,
-	networks,
-} from "../../lib/constants/lit";
-import type EthersUtilsService from "../ethers/ethersUtilsService";
 
 /**
  * Class for interacting with the Lit Protocol, enabling network connection,
