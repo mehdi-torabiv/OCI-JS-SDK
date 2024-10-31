@@ -1,21 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "ES5",
-    "module": "ES6",
-    "declaration": true,
-    "declarationDir": "dist",
-    "outDir": "dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "lib": ["ESNext", "DOM"],
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/*.test.ts", "rollup.config.mjs"]
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "ES6",
+		"declaration": true,
+		"declarationDir": "dist",
+		"outDir": "dist",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"moduleResolution": "node",
+		"lib": ["ESNext", "DOM"],
+		"sourceMap": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "**/*.test.ts", "rollup.config.mjs"]
 }
