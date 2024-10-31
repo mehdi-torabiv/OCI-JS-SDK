@@ -1,1 +1,1 @@
-export { default as oidPermissionManagerService } from "@/services/oid/oidPermissionManagerService";
+export { default as OidPermissionManagerService } from "./oidPermissionManagerService";

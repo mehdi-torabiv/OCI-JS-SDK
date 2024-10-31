@@ -1,2 +1,2 @@
-export { default as ociClient } from "@/services/oci/ociClientService";
+export { default as OciClient } from "./ociClientService";
 export * from "./types";

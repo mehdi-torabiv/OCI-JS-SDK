@@ -1,1 +1,1 @@
-export { default as litService } from "@/services/lit/litProtocolService";
+export { default as LitService } from "./litProtocolService";

@@ -36,7 +36,7 @@ export default {
 			tsconfigOverride: {
 				compilerOptions: {
 					declaration: true,
-					declarationDir: "dist",
+					declarationDir: "./dist",
 				},
 			},
 		}),
