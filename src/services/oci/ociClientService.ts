@@ -32,14 +32,13 @@ export class OciClient {
 		this.attestationService = new AttestationService(chainId);
 		this.ethersUtilsService = new EthersUtilsService();
 		this.litProtocol = new LitProtocol(this.ethersUtilsService);
-		this.litProtocol.connect(chainId);
-		this.litProtocol.getSessionSigsViaAuthSig(chainId, appPrivateKey);
 		this.permissionManager = new OIDPermissionManagerService(chainId);
-
-		console.log("OciClient initialized with chainId:", chainId);
 	}
 
-	public async getUserProfiles(provider: "discord" | "google", userId: string) {
+	public async getUserProfiles(
+		provider: "discord" | "google" | "address",
+		accountId: string | `0x${string}`,
+	) {
 		if (!this.attestationService) {
 			throw new Error("Attestation service is not initialized.");
 		}
@@ -53,10 +52,12 @@ export class OciClient {
 		}
 
 		const recipientAddress =
-			await this.attestationService.findRecipientWalletAddress(
-				userId,
-				provider,
-			);
+			provider === "address"
+				? accountId
+				: await this.attestationService.findRecipientWalletAddress(
+						accountId,
+						provider,
+					);
 
 		if (!recipientAddress) {
 			throw new Error("Recipient wallet address not found.");
@@ -96,6 +97,12 @@ export class OciClient {
 			if (!secret) {
 				throw new Error("Attestation secret not found.");
 			}
+
+			await this.litProtocol?.connect(this.config.chainId);
+			await this.litProtocol?.getSessionSigsViaAuthSig(
+				this.config.chainId,
+				this.config.appPrivateKey,
+			);
 
 			const decryptedData = await this.litProtocol.decryptAttestationFromJson(
 				this.config.chainId,
