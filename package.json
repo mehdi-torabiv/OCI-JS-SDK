@@ -1,10 +1,10 @@
 {
 	"name": "oci-js-sdk",
-	"version": "1.1.6",
+	"version": "1.1.7",
 	"description": "",
-	"main": "dist/index.js",
+	"main": "dist/index.cjs",
 	"scripts": {
-		"build": "rollup -c",
+		"build": "rollup -c --bundleConfigAsCjs",
 		"start": "node dist/index.cjs",
 		"test": "jest",
 		"doc": "typedoc",
