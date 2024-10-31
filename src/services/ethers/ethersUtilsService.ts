@@ -1,6 +1,6 @@
 import { JsonRpcProvider, type Signer, Wallet } from "ethers";
 
-export class EthersUtilsService {
+export default class EthersUtilsService {
 	public getProvider(rpcURL: string) {
 		return new JsonRpcProvider(rpcURL);
 	}

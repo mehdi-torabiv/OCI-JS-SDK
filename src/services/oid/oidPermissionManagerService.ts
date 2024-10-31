@@ -8,7 +8,7 @@ import { oidPermissionManagerConfig } from "../../configs/oidPermissionManagerCo
 import { networkConfig } from "../../lib/constants";
 import type { oidPermissionManagerABI } from "../../lib/contracts/oid";
 
-export class OIDPermissionManagerService {
+export default class OIDPermissionManagerService {
 	private readonly client: PublicClient;
 	private readonly contractAddress: Address;
 	private readonly contractABI: typeof oidPermissionManagerABI;

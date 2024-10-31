@@ -14,13 +14,13 @@ import {
 	type SupportedChainId,
 	networks,
 } from "../../lib/constants/lit";
-import type { EthersUtilsService } from "../ethers";
+import type EthersUtilsService from "../ethers/ethersUtilsService";
 
 /**
  * Class for interacting with the Lit Protocol, enabling network connection,
  * session signature generation, and data decryption.
  */
-export class LitProtocol {
+export default class LitProtocol {
 	private litNodeClient: LitNodeClientNodeJs | null = null;
 	private network: LitNetwork | undefined;
 
