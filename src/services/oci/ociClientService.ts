@@ -37,7 +37,7 @@ export class OciClient {
 
 	public async getUserProfiles(
 		provider: "discord" | "google" | "address",
-		accountId: string,
+		accountId: string | `0x${string}`,
 	) {
 		if (!this.attestationService) {
 			throw new Error("Attestation service is not initialized.");
