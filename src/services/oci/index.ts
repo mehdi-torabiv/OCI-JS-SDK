@@ -1,1 +1,1 @@
-export * from "./ociClient";
+export * from "./ociClientService";

@@ -10,7 +10,7 @@ import {
 	chainIdToGraphQLEndpoint,
 	schemaId,
 } from "../../lib/constants";
-import { FetchService } from "../fetchService";
+import { FetchService } from "../fetch";
 
 /**
  * Service for interacting with attestations and retrieving recipient wallet addresses.

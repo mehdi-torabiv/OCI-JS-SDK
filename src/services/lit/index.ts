@@ -1,1 +1,1 @@
-export * from "./litProtocol";
+export * from "./litProtocolService";
