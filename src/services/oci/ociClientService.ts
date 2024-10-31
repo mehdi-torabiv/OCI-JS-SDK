@@ -2,17 +2,17 @@ import {
 	convertUnit8ArrayToJson,
 	getAccountFromPrivateKey,
 } from "../../helpers";
-import { AttestationService } from "../eas";
-import { EthersUtilsService } from "../ethers";
-import { LitProtocol } from "../lit";
-import { OIDPermissionManagerService } from "../oid";
+import AttestationService from "../eas/attestationService";
+import EthersUtilsService from "../ethers/ethersUtilsService";
+import LitProtocol from "../lit/litProtocolService";
+import OIDPermissionManagerService from "../oid/oidPermissionManagerService";
 
 interface OciClientConfig {
 	chainId: number;
 	appPrivateKey: `0x${string}`;
 }
 
-export class OciClient {
+export default class OciClient {
 	private attestationService?: AttestationService;
 	private ethersUtilsService?: EthersUtilsService;
 	private litProtocol?: LitProtocol;

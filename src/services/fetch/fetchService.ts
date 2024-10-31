@@ -1,7 +1,7 @@
 /**
  * A service for making HTTP requests.
  */
-export class FetchService {
+export default class FetchService {
 	/**
 	 * Makes a POST request to the specified URL with the given body.
 	 * @param url - The URL to send the request to.

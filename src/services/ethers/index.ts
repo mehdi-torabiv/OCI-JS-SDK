@@ -1,1 +1,1 @@
-export * from "./ethersUtilsService";
+export { default as ethersUtilsService } from "./ethersUtilsService";

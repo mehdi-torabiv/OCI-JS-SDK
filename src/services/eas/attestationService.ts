@@ -10,12 +10,12 @@ import {
 	chainIdToGraphQLEndpoint,
 	schemaId,
 } from "../../lib/constants";
-import { FetchService } from "../fetch";
+import FetchService from "../fetch/fetchService";
 
 /**
  * Service for interacting with attestations and retrieving recipient wallet addresses.
  */
-export class AttestationService {
+export default class AttestationService {
 	private graphqlEndpoint: string;
 	private fetchService: FetchService;
 
