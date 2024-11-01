@@ -31,7 +31,6 @@ export default class AttestationService {
 		}
 		this.graphqlEndpoint = endpoint;
 		this.fetchService = new FetchService();
-		console.log({ graphqlEndpoint: this.graphqlEndpoint });
 	}
 
 	/**
@@ -43,6 +42,10 @@ export default class AttestationService {
 	public async fetchAttestationsByRecipient(
 		recipient: string,
 	): Promise<{ id: Address; decodedDataJson: string; data: string }[]> {
+		if (!recipient) {
+			throw new Error("Recipient is required");
+		}
+
 		const query = `
 	  query GetAttestations(
 		$attester: String!
@@ -80,10 +83,7 @@ export default class AttestationService {
 				};
 			}>(this.graphqlEndpoint, { query, variables });
 
-			const attestations = responseBody.data.attestations;
-			if (!attestations || attestations.length === 0) {
-				throw new Error("No attestations found for the given wallet address");
-			}
+			const { attestations } = responseBody.data ?? [];
 
 			return attestations;
 		} catch (error) {
