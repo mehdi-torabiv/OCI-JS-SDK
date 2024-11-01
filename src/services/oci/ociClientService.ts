@@ -1,4 +1,8 @@
-import { convertUnit8ArrayToJson, getAccountFromPrivateKey } from "@/helpers";
+import {
+	convertUnit8ArrayToJson,
+	getAccountFromPrivateKey,
+	isValidAddress,
+} from "@/helpers";
 import AttestationService from "@/services/eas/attestationService";
 import EthersUtilsService from "@/services/ethers/ethersUtilsService";
 import LitProtocol from "@/services/lit/litProtocolService";
@@ -46,6 +50,10 @@ export default class OciClient {
 
 		if (!this.litProtocol) {
 			throw new Error("Lit protocol is not initialized.");
+		}
+
+		if (provider === "address" && !isValidAddress(accountId)) {
+			throw new Error("Invalid wallet address");
 		}
 
 		const recipientAddress =

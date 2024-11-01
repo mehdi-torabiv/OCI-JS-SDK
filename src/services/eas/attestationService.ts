@@ -1,4 +1,4 @@
-import { hashAccountId } from "@/helpers";
+import { hashAccountId, isValidAddress } from "@/helpers";
 import {
 	SCHEMA_TYPES,
 	attester,
@@ -44,6 +44,10 @@ export default class AttestationService {
 	): Promise<{ id: Address; decodedDataJson: string; data: string }[]> {
 		if (!recipient) {
 			throw new Error("Recipient is required");
+		}
+
+		if (!isValidAddress(recipient)) {
+			throw new Error("Invalid wallet address");
 		}
 
 		const query = `
