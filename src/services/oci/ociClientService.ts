@@ -66,7 +66,7 @@ export default class OciClient {
 			);
 
 		if (attestations.length === 0) {
-			throw new Error("No attestations found.");
+			return [];
 		}
 
 		const userProfiles = [];
