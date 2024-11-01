@@ -1,4 +1,4 @@
-import { type PrivateKeyAccount, keccak256, toHex } from "viem";
+import { type PrivateKeyAccount, isAddress, keccak256, toHex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
 /**
@@ -28,4 +28,13 @@ export function getAccountFromPrivateKey(privateKey: string) {
 export function convertUnit8ArrayToJson(data: Uint8Array) {
 	const jsonString = Buffer.from(data).toString("utf8");
 	return JSON.parse(jsonString);
+}
+
+/**
+ * Validate whether a given string is a valid address.
+ * @param address - The address string to be validated.
+ * @returns `true` if the address is valid; otherwise, `false`.
+ */
+export function isValidAddress(address: string): boolean {
+	return isAddress(address);
 }
