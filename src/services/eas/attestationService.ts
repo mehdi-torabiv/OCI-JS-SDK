@@ -1,16 +1,16 @@
-import { hashAccountId, isValidAddress } from "@/helpers";
-import {
-	SCHEMA_TYPES,
-	attester,
-	chainIdToGraphQLEndpoint,
-	schemaId,
-} from "@/lib/constants";
-import FetchService from "@/services/fetch/fetchService";
 import {
 	type SchemaDecodedItem,
 	SchemaEncoder,
 } from "@ethereum-attestation-service/eas-sdk";
 import type { Address } from "viem";
+import { hashAccountId, isValidAddress } from "../../helpers";
+import {
+	SCHEMA_TYPES,
+	attester,
+	chainIdToGraphQLEndpoint,
+	schemaId,
+} from "../../lib/constants";
+import FetchService from "../../services/fetch/fetchService";
 
 /**
  * Service for interacting with attestations and retrieving recipient wallet addresses.

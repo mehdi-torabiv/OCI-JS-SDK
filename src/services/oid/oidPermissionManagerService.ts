@@ -1,12 +1,12 @@
-import { oidPermissionManagerConfig } from "@/configs/oidPermissionManagerConfig";
-import { networkConfig } from "@/lib/constants";
-import type { oidPermissionManagerABI } from "@/lib/contracts/oid";
 import {
 	http,
 	type Address,
 	type PublicClient,
 	createPublicClient,
 } from "viem";
+import { oidPermissionManagerConfig } from "../../configs/oidPermissionManagerConfig";
+import { networkConfig } from "../../lib/constants";
+import type { oidPermissionManagerABI } from "../../lib/contracts/oid";
 
 export default class OIDPermissionManagerService {
 	private readonly client: PublicClient;

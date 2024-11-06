@@ -2,11 +2,11 @@ import {
 	convertUnit8ArrayToJson,
 	getAccountFromPrivateKey,
 	isValidAddress,
-} from "@/helpers";
-import AttestationService from "@/services/eas/attestationService";
-import EthersUtilsService from "@/services/ethers/ethersUtilsService";
-import LitProtocol from "@/services/lit/litProtocolService";
-import OIDPermissionManagerService from "@/services/oid/oidPermissionManagerService";
+} from "../../helpers";
+import AttestationService from "../../services/eas/attestationService";
+import EthersUtilsService from "../../services/ethers/ethersUtilsService";
+import LitProtocol from "../../services/lit/litProtocolService";
+import OIDPermissionManagerService from "../../services/oid/oidPermissionManagerService";
 
 interface OciClientConfig {
 	chainId: number;
