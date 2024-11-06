@@ -36,7 +36,7 @@ export default class OIDPermissionManagerService {
 
 		this.client = createPublicClient({
 			chain,
-			transport: http(),
+			transport: http("https://rpc.sepolia.org"),
 		});
 	}
 
