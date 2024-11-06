@@ -28,9 +28,7 @@ export default class LitProtocol {
 	 * Initializes a new instance of the LitProtocol class.
 	 * @param ethersUtilsService - An instance of EthersUtilsService for creating signers.
 	 */
-	constructor(private readonly ethersUtilsService: EthersUtilsService) {
-		console.log("LitProtocol initialized");
-	}
+	constructor(private readonly ethersUtilsService: EthersUtilsService) {}
 
 	/**
 	 * Maps a chainId to the appropriate LitNetwork.

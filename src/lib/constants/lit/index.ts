@@ -6,11 +6,11 @@ export const networks = {
 		clientConfig: {
 			alertWhenUnauthorized: false,
 			litNetwork: LitNetwork.DatilDev,
-			debug: true,
+			debug: false,
 		},
 		contractConfig: {
 			network: LitNetwork.DatilDev,
-			debug: true,
+			debug: false,
 		},
 		rpc: LIT_RPC.CHRONICLE_YELLOWSTONE,
 	},
@@ -18,11 +18,11 @@ export const networks = {
 		clientConfig: {
 			alertWhenUnauthorized: false,
 			litNetwork: LitNetwork.DatilTest,
-			debug: true,
+			debug: false,
 		},
 		contractConfig: {
 			network: LitNetwork.DatilTest,
-			debug: true,
+			debug: false,
 		},
 		rpc: LIT_RPC.CHRONICLE_YELLOWSTONE,
 	},
