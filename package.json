@@ -7,7 +7,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",
-		"start": "ts-node -r tsconfig-paths/register src/index.ts",
+		"start": "node dist/index.js",
 		"test": "jest",
 		"doc": "typedoc",
 		"lint": "pnpm biome check .",
