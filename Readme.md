@@ -2,20 +2,20 @@
 
 ![npm version](https://img.shields.io/npm/v/oci-js-sdk)
 ![license](https://img.shields.io/npm/l/oci-js-sdk)
-![build](https://img.shields.io/github/actions/workflow/status/mehdi-torabiv/OCI-JS-SDK/Build.yml)
+![build](https://img.shields.io/github/actions/workflow/status/mehdi-torabiv/OCI-JS-SDK/build.yml?branch=main)
 
-OCI JS SDK is a JavaScript/TypeScript SDK for interacting with the OCI platform, enabling developers to manage attestations, permissions, and encrypted data on-chain. Built with flexibility in mind, this SDK facilitates seamless integration with various blockchain protocols and services.
+OCI JS SDK is a JavaScript/TypeScript SDK designed for seamless interaction with the Oracle Cloud Infrastructure (OCI) platform. It enables developers to manage attestations, permissions, and encrypted on-chain data efficiently, facilitating integration with various blockchain protocols and services.
 
 ## Features
 
 - Retrieve user attestations by wallet address
 - Manage attestations with custom permissions
 - Connect to on-chain services for verification and decryption
-- Compatible with multiple identity providers (e.g., Discord, Google)
+- Support for multiple providers (e.g., Discord, Google)
 
 ## Installation
 
-Install the OCI JS SDK with your preferred package manager:
+Install the OCI JS SDK using your preferred package manager:
 
 ```bash
 # Using pnpm
@@ -32,7 +32,7 @@ yarn add oci-js-sdk
 
 ### Initialization
 
-To begin using the OCI JS SDK, import and configure `OciClient` with your network details, including `chainId`, an optional `appPrivateKey`, and `rpcUrl`.
+Begin by importing and configuring the `OciClient` with your network details, including `chainId`, `appPrivateKey`, and an optional `rpcUrl`:
 
 ```typescript
 import OciClient from "oci-js-sdk";
@@ -46,7 +46,7 @@ const ociClient = new OciClient({
 
 ### Fetch User Profiles
 
-Retrieve user profiles by specifying a provider type (e.g., `discord`, `google`, `address`) and the associated account ID. This method fetches decrypted data for each attestation, provided permissions allow access.
+To fetch user profiles, provide a provider type (e.g., `discord`, `google`, `address`) and the corresponding account ID. This method retrieves decrypted data for each attestation where permissions allow:
 
 ```typescript
 async function fetchUserProfiles() {
@@ -55,7 +55,7 @@ async function fetchUserProfiles() {
       "discord",
       "your-discord-id"
     );
-    console.log("User Profiles:", userProfiles);
+    console.log(userProfiles);
   } catch (error) {
     console.error("Error fetching user profiles:", error);
   }
@@ -66,48 +66,48 @@ fetchUserProfiles();
 
 ### Fetch Attestations by Wallet Address
 
-Retrieve attestations for a specified wallet address without decrypting the data. This method returns each attestation’s unique ID and the associated provider.
+Retrieve attestations for a given wallet address without decrypting the data. This method returns the attestation ID and provider:
 
 ```typescript
-async function fetchUserAttestations() {
+async function fetchAttestations() {
   try {
     const attestations = await ociClient.getUserAttestationsByRecipient(
       "0xYourWalletAddress"
     );
-    console.log("Attestations:", attestations);
+    console.log(attestations);
   } catch (error) {
     console.error("Error fetching attestations:", error);
   }
 }
 
-fetchUserAttestations();
+fetchAttestations();
 ```
 
 ## API Documentation
 
-Generate full API documentation with `typedoc`:
+Generate full API documentation using `typedoc`:
 
 ```bash
 pnpm run doc
 ```
 
-The generated documentation will be available in the `docs` folder.
+The documentation will be generated in the `docs` folder.
 
 ## Scripts
 
 - **build**: Compiles the TypeScript code into JavaScript.
 - **start**: Runs the compiled SDK.
-- **dev**: Runs the SDK in development mode with live reloading.
-- **test**: Runs the test suite with Jest.
-- **doc**: Generates API documentation using Typedoc.
+- **dev**: Runs the SDK in development mode with live reload.
+- **test**: Executes tests using Jest.
+- **doc**: Generates API documentation with Typedoc.
 - **lint**: Runs Biome (ESLint alternative) checks.
-- **lint:fix**: Automatically fixes linting issues.
+- **lint:fix**: Automatically fixes lint issues.
 - **format**: Formats the code using Biome.
 - **prepare**: Sets up Git hooks using Husky.
 
 ## Testing
 
-To run the test suite, use:
+To run tests, use the following command:
 
 ```bash
 pnpm run test
@@ -117,11 +117,11 @@ pnpm run test
 
 Contributions are welcome! To get started:
 
-1. Fork this repository.
-2. Clone your fork locally.
+1. Fork the repository.
+2. Clone your forked repository.
 3. Make your changes.
 4. Submit a pull request.
 
 ## License
 
-This project is licensed under the ISC License. See the [LICENSE](https://github.com/mehdi-torabiv/OCI-JS-SDK/blob/main/LICENSE) file for more details.
+This project is licensed under the **GNU Affero General Public License (AGPL) v3**. See the [LICENSE](https://www.gnu.org/licenses/agpl-3.0.en.html) file for more details.
