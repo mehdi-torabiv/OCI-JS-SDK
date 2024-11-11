@@ -5,10 +5,17 @@ on:
     branches:
       - main
 
+  # Triggers after the CI workflow completes on the main branch
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
 jobs:
   publish:
+    # Ensure the workflow only runs if the push was to main and CI succeeded.
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow == 'CI Pipeline' && github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-latest
-    if: ! contains(github.event.head_commit.message, '[skip publish]')
 
     steps:
       - name: Checkout code
