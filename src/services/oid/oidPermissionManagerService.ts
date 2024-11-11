@@ -14,11 +14,14 @@ export default class OIDPermissionManagerService {
 	private readonly contractABI: typeof oidPermissionManagerABI;
 
 	/**
-	 * Initializes the OIDPermissionManagerService with the specified chainId.
+	 * Initializes the OIDPermissionManagerService with the specified chainId and optional RPC URL.
 	 * @param chainId - The ID of the blockchain network.
-	 * @throws Will throw an error if the specified chainId is not supported.
+	 * @param rpcUrl - An optional RPC URL to override the default RPC URL for the specified chain.
+	 *                 If provided, it will be used to connect to the blockchain network;
+	 *                 otherwise, the default RPC URL from the chain configuration will be used.
+	 * @throws Will throw an error if the specified chainId is not supported or if chain configuration is missing.
 	 */
-	constructor(chainId: number) {
+	constructor(chainId: number, rpcUrl?: string) {
 		const config = oidPermissionManagerConfig[chainId];
 
 		if (!config) {
@@ -34,9 +37,11 @@ export default class OIDPermissionManagerService {
 			throw new Error(`Chain configuration not found for chainId: ${chainId}`);
 		}
 
+		const transportUrl = rpcUrl || chain?.rpcUrls?.default?.http[0];
+
 		this.client = createPublicClient({
 			chain,
-			transport: http("https://rpc.sepolia.org"),
+			transport: http(transportUrl),
 		});
 	}
 
@@ -45,6 +50,7 @@ export default class OIDPermissionManagerService {
 	 * @param uid - The attestation unique identifier (UID) to check.
 	 * @param account - The account address to check the permission for.
 	 * @returns A promise that resolves to true if the account has permission, otherwise false.
+	 * @throws Will throw an error if there is an issue reading the contract or checking permissions.
 	 */
 	public async hasPermission(uid: Address, account: Address): Promise<boolean> {
 		try {
