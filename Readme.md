@@ -2,9 +2,9 @@
 
 ![npm version](https://img.shields.io/npm/v/oci-js-sdk)
 ![license](https://img.shields.io/npm/l/oci-js-sdk)
-![build](https://img.shields.io/github/actions/workflow/status/mehdi-torabiv/OCI-JS-SDK/build.yml?branch=main)
+![build](https://img.shields.io/github/actions/workflow/status/mehdi-torabiv/OCI-JS-SDK/ci.yml?branch=main)
 
-OCI JS SDK is a JavaScript/TypeScript SDK designed for seamless interaction with the Oracle Cloud Infrastructure (OCI) platform. It enables developers to manage attestations, permissions, and encrypted on-chain data efficiently, facilitating integration with various blockchain protocols and services.
+OCI JS SDK is a JavaScript/TypeScript SDK designed for seamless interaction with the OCI platform. It enables developers to manage attestations, permissions, and encrypted on-chain data efficiently, facilitating integration with various blockchain protocols and services.
 
 ## Features
 
