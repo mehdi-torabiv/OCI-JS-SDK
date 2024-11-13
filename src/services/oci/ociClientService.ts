@@ -232,15 +232,20 @@ export default class OciClient {
 	}
 
 	/**
-	 * Retrieves attestations by the recipient's wallet address without decrypting.
-	 * Returns each attestation's provider information and a flag indicating
-	 * whether the app developer has access to the attestation.
+	 * Fetches attestations for a specified recipient's wallet address,
+	 * providing information on the attestation provider and a flag indicating
+	 * whether the app developer has access permissions for each attestation.
 	 *
-	 * @param recipientAddress - The wallet address of the recipient to fetch attestations for.
-	 * @param appPublicAddress - The public address of the app developer.
-	 * @returns A promise that resolves to an array of user attestations.
+	 * @param recipientAddress - The wallet address of the recipient (must start with `0x`)
+	 *                           to retrieve attestations for.
+	 * @param appPublicAddress - The public address of the app developer (must start with `0x`),
+	 *                           used to verify access permissions for each attestation.
+	 * @returns A promise that resolves to an array of user attestations, where each attestation contains:
+	 *          - `attestationId`: The unique identifier of the attestation.
+	 *          - `provider`: The provider information extracted from the attestation data.
+	 *          - `hasAccess`: A boolean indicating whether the app developer has permission to access this attestation.
 	 */
-	public async getUserAttestationsByRecipient(
+	public async getUserProfileWithAppPermissions(
 		recipientAddress: `0x${string}`,
 		appPublicAddress: `0x${string}`,
 	): Promise<UserAttestation[]> {

@@ -55,7 +55,6 @@ async function fetchUserProfiles() {
       "discord",
       "your-discord-id"
     );
-    console.log(userProfiles);
   } catch (error) {
     console.error("Error fetching user profiles:", error);
   }
@@ -71,11 +70,10 @@ Retrieve attestations for a given wallet address without decrypting the data. Th
 ```typescript
 async function fetchAttestations() {
   try {
-    const attestations = await ociClient.getUserAttestationsByRecipient(
+    const attestations = await ociClient.getUserProfileWithAppPermissions(
       "0xYourWalletAddress",
       "0xDeveloperPublicAddress"
     );
-    console.log(attestations);
   } catch (error) {
     console.error("Error fetching attestations:", error);
   }
