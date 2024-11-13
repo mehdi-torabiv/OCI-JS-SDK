@@ -72,7 +72,8 @@ Retrieve attestations for a given wallet address without decrypting the data. Th
 async function fetchAttestations() {
   try {
     const attestations = await ociClient.getUserAttestationsByRecipient(
-      "0xYourWalletAddress"
+      "0xYourWalletAddress",
+      "0xDeveloperPublicAddress"
     );
     console.log(attestations);
   } catch (error) {
