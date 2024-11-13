@@ -7,6 +7,7 @@ import AttestationService from "../../services/eas/attestationService";
 import EthersUtilsService from "../../services/ethers/ethersUtilsService";
 import LitProtocol from "../../services/lit/litProtocolService";
 import OIDPermissionManagerService from "../../services/oid/oidPermissionManagerService";
+import type { UserAttestation } from "./types";
 
 interface OciClientConfig {
 	chainId: number;
@@ -147,7 +148,6 @@ export default class OciClient {
 		provider: "discord" | "google" | "address",
 		accountId: string | `0x${string}`,
 	) {
-		// Run all necessary checks
 		this.checkAppPrivateKey();
 		this.checkAttestationService();
 		this.checkPermissionManager();
@@ -233,16 +233,17 @@ export default class OciClient {
 
 	/**
 	 * Retrieves attestations by the recipient's wallet address without decrypting.
-	 * Only returns the provider information in each attestation.
+	 * Returns each attestation's provider information and a flag indicating
+	 * whether the app developer has access to the attestation.
 	 *
 	 * @param recipientAddress - The wallet address of the recipient to fetch attestations for.
-	 * @returns A promise that resolves to an array of attestations, each containing:
-	 *          - `attestationId`: Unique ID of the attestation.
-	 *          - `provider`: The provider name associated with the attestation.
+	 * @param appPublicAddress - The public address of the app developer.
+	 * @returns A promise that resolves to an array of user attestations.
 	 */
 	public async getUserAttestationsByRecipient(
 		recipientAddress: `0x${string}`,
-	): Promise<{ attestationId: string; provider: string }[]> {
+		appPublicAddress: `0x${string}`,
+	): Promise<UserAttestation[]> {
 		this.checkAttestationService();
 
 		const attestations =
@@ -254,15 +255,24 @@ export default class OciClient {
 			return [];
 		}
 
-		const userAttestations = attestations.map((attestation) => {
-			return {
+		const userAttestations: UserAttestation[] = [];
+
+		for (const attestation of attestations) {
+			const hasAccess =
+				(await this.permissionManager?.hasPermission?.(
+					attestation.id,
+					appPublicAddress,
+				)) ?? false;
+
+			userAttestations.push({
 				attestationId: attestation.id,
 				provider: this.extractItemFromData(
 					attestation.data,
 					"provider",
 				) as string,
-			};
-		});
+				hasAccess,
+			});
+		}
 
 		return userAttestations;
 	}

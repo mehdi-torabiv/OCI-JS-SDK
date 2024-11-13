@@ -8,3 +8,9 @@ export type IOciClientConfig = {
 	chainId: number;
 	appPrivateKey: `0x${string}`;
 };
+
+export type UserAttestation = {
+	attestationId: string;
+	provider: string;
+	hasAccess: boolean;
+};
