@@ -97,6 +97,28 @@ export default class AttestationService {
 	}
 
 	/**
+	 * Checks if the account ID is provided.
+	 * @param accountId - The unique identifier of the account.
+	 * @throws Error if the account ID is missing.
+	 */
+	private checkAccountId(accountId: string) {
+		if (!accountId) {
+			throw new Error("Validation failed: Account ID is required.");
+		}
+	}
+
+	/**
+	 * Checks if the provider is provided.
+	 * @param provider - The name of the provider (e.g., "discord").
+	 * @throws Error if the provider is missing.
+	 */
+	private checkProvider(provider: string) {
+		if (!provider) {
+			throw new Error("Validation failed: Provider is required.");
+		}
+	}
+
+	/**
 	 * Generates a hashable string from the provided account ID, provider, and optional metadata.
 	 * @param accountId - The unique identifier of the account.
 	 * @param provider - The name of the provider (e.g., "discord").
@@ -126,6 +148,10 @@ export default class AttestationService {
 		provider: string,
 		metadata?: Record<string, unknown>,
 	) {
+		this.checkAccountId(accountId);
+
+		this.checkProvider(provider);
+
 		return hashString(this.generateHashPayload(accountId, provider, metadata));
 	}
 
