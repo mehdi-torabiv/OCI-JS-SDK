@@ -2,12 +2,12 @@ import { type PrivateKeyAccount, isAddress, keccak256, toHex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
 /**
- * Hashes an account ID using Keccak-256.
- * @param accountId - The account ID to hash.
- * @returns The hashed account ID as a hex string.
+ * Hashes a value using Keccak-256.
+ * @param value - The value to hash.
+ * @returns The hashed value as a hex string.
  */
-export function hashAccountId(accountId: string) {
-	return keccak256(toHex(accountId));
+export function hashString(value: string) {
+	return keccak256(toHex(value));
 }
 
 /**
