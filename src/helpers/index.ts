@@ -1,4 +1,4 @@
-import { type PrivateKeyAccount, isAddress, keccak256, toHex } from "viem";
+import { isAddress, keccak256, toHex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
 /**
@@ -8,6 +8,34 @@ import { privateKeyToAccount } from "viem/accounts";
  */
 export function hashString(value: string) {
 	return keccak256(toHex(value));
+}
+
+/**
+ * Generates a hash for a given set of inputs by creating a hashable string and applying a hash function to it.
+ * @param accountId
+ * @param provider
+ * @param metadata
+ * @returns A hashed string representing the combined input.
+ */
+export function generateHash(
+	accountId: string,
+	provider: string,
+	metadata?: Record<string, unknown>,
+) {
+	if (!accountId) {
+		throw new Error("Validation failed: Account ID is required.");
+	}
+
+	if (!provider) {
+		throw new Error("Validation failed: Provider is required.");
+	}
+
+	if (metadata) {
+		return hashString(
+			`${accountId}${provider}${JSON.stringify(metadata, null, 0)}`,
+		);
+	}
+	return hashString(`${accountId}${provider}`);
 }
 
 /**

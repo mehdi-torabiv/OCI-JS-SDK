@@ -3,7 +3,7 @@ import {
 	SchemaEncoder,
 } from "@ethereum-attestation-service/eas-sdk";
 import type { Address } from "viem";
-import { hashString, isValidAddress } from "../../helpers";
+import { generateHash, isValidAddress } from "../../helpers";
 import {
 	SCHEMA_TYPES,
 	attester,
@@ -16,6 +16,9 @@ import FetchService from "../../services/fetch/fetchService";
  * Service for interacting with attestations and retrieving recipient wallet addresses.
  */
 export default class AttestationService {
+	private schema_Id: string;
+	private attester: string;
+	private schema_type: string;
 	private graphqlEndpoint: string;
 	private fetchService: FetchService;
 
@@ -25,11 +28,15 @@ export default class AttestationService {
 	 * @throws Will throw an error if the specified chainId is not supported.
 	 */
 	constructor(chainId: number) {
-		const endpoint = chainIdToGraphQLEndpoint[chainId];
-		if (!endpoint) {
+		this.schema_Id = schemaId[chainId];
+		this.attester = attester[chainId];
+		this.schema_type = SCHEMA_TYPES[chainId];
+		this.graphqlEndpoint = chainIdToGraphQLEndpoint[chainId];
+
+		if (!this.graphqlEndpoint) {
 			throw new Error(`Unsupported chainId: ${chainId}`);
 		}
-		this.graphqlEndpoint = endpoint;
+
 		this.fetchService = new FetchService();
 	}
 
@@ -97,65 +104,6 @@ export default class AttestationService {
 	}
 
 	/**
-	 * Checks if the account ID is provided.
-	 * @param accountId - The unique identifier of the account.
-	 * @throws Error if the account ID is missing.
-	 */
-	private checkAccountId(accountId: string) {
-		if (!accountId) {
-			throw new Error("Validation failed: Account ID is required.");
-		}
-	}
-
-	/**
-	 * Checks if the provider is provided.
-	 * @param provider - The name of the provider (e.g., "discord").
-	 * @throws Error if the provider is missing.
-	 */
-	private checkProvider(provider: string) {
-		if (!provider) {
-			throw new Error("Validation failed: Provider is required.");
-		}
-	}
-
-	/**
-	 * Generates a hashable string from the provided account ID, provider, and optional metadata.
-	 * @param accountId - The unique identifier of the account.
-	 * @param provider - The name of the provider (e.g., "discord").
-	 * @param metadata - (Optional) Additional metadata to include in the hash payload. Should be a JSON object.
-	 * @returns A concatenated string composed of the accountId, provider, and metadata (if provided).
-	 */
-	private generateHashPayload(
-		accountId: string,
-		provider: string,
-		metadata?: Record<string, unknown>,
-	) {
-		if (metadata) {
-			return `${accountId}${provider}${JSON.stringify(metadata, null, 0)}`;
-		}
-		return `${accountId}${provider}`;
-	}
-
-	/**
-	 * Generates a hash for a given set of inputs by creating a hashable string and applying a hash function to it.
-	 * @param accountId - The unique identifier of the account.
-	 * @param provider - The name of the provider (e.g., "discord").
-	 * @param metadata - (Optional) Additional metadata to include in the hash. Should be a JSON object.
-	 * @returns A hashed string representing the combined input.
-	 */
-	public generateHash(
-		accountId: string,
-		provider: string,
-		metadata?: Record<string, unknown>,
-	) {
-		this.checkAccountId(accountId);
-
-		this.checkProvider(provider);
-
-		return hashString(this.generateHashPayload(accountId, provider, metadata));
-	}
-
-	/**
 	 * Finds the recipient's wallet address based on the account ID and provider.
 	 * @param accountId - The unique identifier for the account.
 	 * @param provider - The name of the provider (e.g., "discord").
@@ -165,8 +113,9 @@ export default class AttestationService {
 	public async findRecipientWalletAddress(
 		accountId: string,
 		provider: string,
+		metadata?: Record<string, unknown>,
 	): Promise<string | null> {
-		const hashedId = hashString(accountId);
+		const hashedId = generateHash(accountId, provider, metadata);
 
 		const query = `
       query Attestations(
@@ -292,7 +241,6 @@ export default class AttestationService {
 	 * @returns {SchemaDecodedItem[]} - The decoded attestation items.
 	 */
 	public decodeAttestationSchemaData(data: string): SchemaDecodedItem[] {
-		const schemaEncoder = new SchemaEncoder(SCHEMA_TYPES);
-		return schemaEncoder.decodeData(data);
+		return new SchemaEncoder(this.schema_type).decodeData(data);
 	}
 }
