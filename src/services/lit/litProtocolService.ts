@@ -72,7 +72,12 @@ export default class LitProtocol {
 	 * @returns The network name as "datil-dev" or "datil-test".
 	 */
 	private getNetworkName(chainId: SupportedChainId): keyof typeof networks {
-		return chainId === 11155111 ? "datil-dev" : "datil-test";
+		const networkMap: Record<SupportedChainId, keyof typeof networks> = {
+			11155111: "datil-dev",
+			84532: "datil-dev",
+		};
+
+		return networkMap[chainId] || "datil-test";
 	}
 
 	/**

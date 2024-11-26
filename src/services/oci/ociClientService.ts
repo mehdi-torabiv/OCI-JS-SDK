@@ -193,7 +193,6 @@ export default class OciClient {
 				console.log(
 					`Permission denied: No access to attestation ${attestation.id}. Skipping decryption.`,
 				);
-				continue;
 			}
 
 			const secret = this.extractItemFromData(attestation.data, "secret");
