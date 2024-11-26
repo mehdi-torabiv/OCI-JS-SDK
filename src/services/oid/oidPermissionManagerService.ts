@@ -47,18 +47,18 @@ export default class OIDPermissionManagerService {
 
 	/**
 	 * Checks if the specified account has permission for the given UID.
-	 * @param uid - The attestation unique identifier (UID) to check.
+	 * @param key - The key to check the permission for.
 	 * @param account - The account address to check the permission for.
 	 * @returns A promise that resolves to true if the account has permission, otherwise false.
 	 * @throws Will throw an error if there is an issue reading the contract or checking permissions.
 	 */
-	public async hasPermission(uid: Address, account: Address): Promise<boolean> {
+	public async hasPermission(key: Address, account: Address): Promise<boolean> {
 		try {
 			const result = await this.client.readContract({
 				address: this.contractAddress as Address,
 				abi: this.contractABI,
 				functionName: "hasPermission",
-				args: [uid, account],
+				args: [key, account],
 			});
 			return result as boolean;
 		} catch (error) {

@@ -13,4 +13,5 @@ export type UserAttestation = {
 	attestationId: string;
 	provider: string;
 	hasAccess: boolean;
+	key: string;
 };
