@@ -14,13 +14,13 @@ export function hashString(value: string) {
  * Generates a hash for a given set of inputs by creating a hashable string and applying a hash function to it.
  * @param accountId
  * @param provider
- * @param metadata
+ * @param metadata - Additional metadata to be included in the hash.
  * @returns A hashed string representing the combined input.
  */
 export function generateHash(
 	accountId: string,
 	provider: string,
-	metadata?: Record<string, unknown>,
+	metadata: Record<string, unknown> = {},
 ) {
 	if (!accountId) {
 		throw new Error("Validation failed: Account ID is required.");
@@ -30,12 +30,9 @@ export function generateHash(
 		throw new Error("Validation failed: Provider is required.");
 	}
 
-	if (metadata) {
-		return hashString(
-			`${accountId}${provider}${JSON.stringify(metadata, null, 0)}`,
-		);
-	}
-	return hashString(`${accountId}${provider}`);
+	return hashString(
+		`${accountId}${provider}${JSON.stringify(metadata, null, 0)}`,
+	);
 }
 
 /**
