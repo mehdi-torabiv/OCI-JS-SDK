@@ -182,8 +182,10 @@ export default class OciClient {
 		this.checkDeveloperAccount();
 
 		for (const attestation of attestations) {
+			const key = this.extractItemFromData(attestation.data, "key");
+
 			const hasPermission = await this.permissionManager?.hasPermission?.(
-				attestation.id,
+				key as `0x${string}`,
 				this.developerAccount?.address as `0x${string}`,
 			);
 
@@ -191,7 +193,6 @@ export default class OciClient {
 				console.log(
 					`Permission denied: No access to attestation ${attestation.id}. Skipping decryption.`,
 				);
-				continue;
 			}
 
 			const secret = this.extractItemFromData(attestation.data, "secret");
@@ -263,18 +264,19 @@ export default class OciClient {
 		const userAttestations: UserAttestation[] = [];
 
 		for (const attestation of attestations) {
+			const key = this.extractItemFromData(attestation.data, "key");
+			const provider = this.extractItemFromData(attestation.data, "provider");
+
 			const hasAccess =
 				(await this.permissionManager?.hasPermission?.(
-					attestation.id,
+					key as `0x${string}`,
 					appPublicAddress,
 				)) ?? false;
 
 			userAttestations.push({
 				attestationId: attestation.id,
-				provider: this.extractItemFromData(
-					attestation.data,
-					"provider",
-				) as string,
+				key: key as `0x${string}`,
+				provider: provider as string,
 				hasAccess,
 			});
 		}
