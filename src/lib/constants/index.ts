@@ -9,13 +9,11 @@ export const schemaId: { [key: number]: string } = {
 	11155111:
 		"0x85e90e3e16d319578888790af3284fea8bca549305071531e7478e3e0b5e7d6d",
 	11155420:
-		"0xa9b905fd9054be7c680f811167527d2c0b6511c6cce4eb713c855fdfaca920e8",
+		"0x2c988095892ea57c600e5cc6fb62531502bc0c8d038ac39dc3fab161b6f122db",
 };
 
-export const SCHEMA_TYPES: { [key: number]: string } = {
-	11155111: "bytes32 key, string provider, string secret",
-	11155420: "bytes32 key, string provider, string secret, metadata bytes32",
-};
+export const SCHEMA_TYPES =
+	"bytes32 key, string provider, string secret, metadata string";
 
 export const chainIdToGraphQLEndpoint: { [key: number]: string } = {
 	11155111: "https://sepolia.easscan.org/graphql",

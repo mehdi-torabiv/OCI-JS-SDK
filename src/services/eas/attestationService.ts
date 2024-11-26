@@ -16,9 +16,8 @@ import FetchService from "../../services/fetch/fetchService";
  * Service for interacting with attestations and retrieving recipient wallet addresses.
  */
 export default class AttestationService {
-	private schema_Id: string;
+	private schemaId: string;
 	private attester: string;
-	private schema_type: string;
 	private graphqlEndpoint: string;
 	private fetchService: FetchService;
 
@@ -28,9 +27,8 @@ export default class AttestationService {
 	 * @throws Will throw an error if the specified chainId is not supported.
 	 */
 	constructor(chainId: number) {
-		this.schema_Id = schemaId[chainId];
+		this.schemaId = schemaId[chainId];
 		this.attester = attester[chainId];
-		this.schema_type = SCHEMA_TYPES[chainId];
 		this.graphqlEndpoint = chainIdToGraphQLEndpoint[chainId];
 
 		if (!this.graphqlEndpoint) {
@@ -49,13 +47,7 @@ export default class AttestationService {
 	public async fetchAttestationsByRecipient(
 		recipient: string,
 	): Promise<{ id: Address; decodedDataJson: string; data: string }[]> {
-		if (!recipient) {
-			throw new Error("Recipient is required");
-		}
-
-		if (!isValidAddress(recipient)) {
-			throw new Error("Invalid wallet address");
-		}
+		this.validateRecipient(recipient);
 
 		const query = `
 	  query GetAttestations(
@@ -78,8 +70,8 @@ export default class AttestationService {
 	  }`;
 
 		const variables = {
-			attester,
-			schemaId,
+			attester: this.attester,
+			schemaId: this.schemaId,
 			recipient,
 		};
 
@@ -136,8 +128,8 @@ export default class AttestationService {
       }`;
 
 		const variables = {
-			attester,
-			schemaId,
+			attester: this.attester,
+			schemaId: this.schemaId,
 			hashedId,
 		};
 
@@ -241,6 +233,16 @@ export default class AttestationService {
 	 * @returns {SchemaDecodedItem[]} - The decoded attestation items.
 	 */
 	public decodeAttestationSchemaData(data: string): SchemaDecodedItem[] {
-		return new SchemaEncoder(this.schema_type).decodeData(data);
+		return new SchemaEncoder(SCHEMA_TYPES).decodeData(data);
+	}
+
+	/**
+	 * Validates recipient's wallet address.
+	 * @param recipient - Recipient's wallet address.
+	 * @throws Error if the recipient address is invalid.
+	 */
+	private validateRecipient(recipient: string): void {
+		if (!recipient) throw new Error("Recipient is required.");
+		if (!isValidAddress(recipient)) throw new Error("Invalid wallet address.");
 	}
 }
