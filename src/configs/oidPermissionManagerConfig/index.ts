@@ -23,4 +23,8 @@ export const oidPermissionManagerConfig: OidPermissionManagerConfig = {
 		contractAddress: "0xF65e300B0e622B1Bc224c7351397ea2FF29f1c3D",
 		contractABI: oidPermissionManagerABI,
 	},
+	42161: {
+		contractAddress: "0x9a85Bb58CFb60ABd205c4Af7039fF73C86b41bd8",
+		contractABI: oidPermissionManagerABI,
+	},
 };
