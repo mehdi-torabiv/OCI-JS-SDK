@@ -28,7 +28,7 @@ export const networks = {
 	},
 };
 
-export const SUPPORTED_CHAINS = [11155111, 11155420, 84532];
+export const SUPPORTED_CHAINS = [11155111, 11155420, 84532, 42161];
 
 export type SupportedChainId = (typeof SUPPORTED_CHAINS)[number];
 export type LitChain = AccsDefaultParams["chain"];
