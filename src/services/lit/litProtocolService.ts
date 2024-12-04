@@ -75,6 +75,7 @@ export default class LitProtocol {
 		const networkMap: Record<SupportedChainId, keyof typeof networks> = {
 			11155111: "datil-dev",
 			84532: "datil-dev",
+			42161: "datil",
 		};
 
 		return networkMap[chainId] || "datil-test";
