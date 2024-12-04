@@ -26,6 +26,18 @@ export const networks = {
 		},
 		rpc: LIT_RPC.CHRONICLE_YELLOWSTONE,
 	},
+	datil: {
+		clientConfig: {
+			alertWhenUnauthorized: false,
+			litNetwork: LitNetwork.Datil,
+			debug: true,
+		},
+		contractConfig: {
+			network: LitNetwork.Datil,
+			debug: true,
+		},
+		rpc: LIT_RPC.CHRONICLE_YELLOWSTONE,
+	},
 };
 
 export const SUPPORTED_CHAINS = [11155111, 11155420, 84532, 42161];
