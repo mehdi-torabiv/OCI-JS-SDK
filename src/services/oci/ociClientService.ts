@@ -133,20 +133,32 @@ export default class OciClient {
 	}
 
 	/**
-	 * Retrieves user profiles based on the specified provider and account ID.
-	 * This method checks if the developer has permission to access each attestation
-	 * and decrypts data as required.
+	 * Initializes the Lit Protocol by connecting and generating session signatures.
+	 */
+	private async initializeLitProtocol() {
+		await this.litProtocol?.connect(this.config.chainId);
+		await this.litProtocol?.getSessionSigsViaAuthSig(
+			this.config.chainId,
+			this.config.appPrivateKey as `0x${string}`,
+		);
+	}
+
+	/**
+	 * Retrieves user profiles based on the provider and account ID.
+	 * - Checks access permissions and filters attestations using `filterByProvider`.
+	 * - Decrypts valid attestations and logs errors without interrupting the process.
 	 *
-	 * @param provider - Specifies the type of account ID (`discord`, `google`, or `address`).
-	 * @param accountId - Identifier of the account; can be a social media ID or wallet address.
-	 *
-	 * @returns A promise that resolves to an array of user profiles, each containing:
-	 *          - `attestationId`: Unique ID of the attestation.
-	 *          - `profile`: An object with `provider` and decrypted `id`.
-	 **/
+	 * @param provider - Account type: `"discord"`, `"google"`, or `"address"`.
+	 * @param accountId - Account identifier: social media ID or wallet address (`0x` prefixed).
+	 * @param filterByProvider - Optional: Filter profiles by provider (`"discord"`, `"google"`).
+	 * @returns A promise that resolves to an array of user profiles, where each profile contains:
+	 *        - `attestationId`: The unique identifier of the attestation.
+	 *        - `profile`: The decrypted profile information containing `provider` and `id`.
+	 */
 	public async getUserProfiles(
 		provider: "discord" | "google" | "address",
 		accountId: string | `0x${string}`,
+		filterByProvider?: ("discord" | "google")[],
 	) {
 		this.checkAppPrivateKey();
 		this.checkAttestationService();
@@ -203,11 +215,16 @@ export default class OciClient {
 				);
 			}
 
-			await this.litProtocol?.connect(this.config.chainId);
-			await this.litProtocol?.getSessionSigsViaAuthSig(
-				this.config.chainId,
-				this.config.appPrivateKey as `0x${string}`,
-			);
+			const provider = this.extractItemFromData(attestation.data, "provider");
+
+			if (
+				filterByProvider &&
+				!filterByProvider.includes(provider as "discord" | "google")
+			) {
+				continue;
+			}
+
+			await this.initializeLitProtocol();
 
 			const decryptedData =
 				await this.litProtocol?.decryptAttestationFromJson?.(
@@ -216,7 +233,30 @@ export default class OciClient {
 					secret,
 				);
 
-			const { id, provider } = decryptedData
+			if (decryptedData?.error) {
+				console.groupCollapsed(
+					`%cDecryption Error: Attestation ${attestation.id} Failed`,
+					"color: red; font-weight: bold;",
+				);
+
+				console.log("🔍 Context:");
+				console.log({
+					AttestationId: attestation.id,
+					ChainId: this.config.chainId,
+					Provider: provider,
+					AccountId: accountId,
+					EncryptedSecret: secret,
+				});
+
+				console.log("💥 Error Details:");
+				console.error(decryptedData.message);
+
+				console.groupEnd();
+
+				continue;
+			}
+
+			const { id } = decryptedData
 				? convertUnit8ArrayToJson(decryptedData)
 				: {};
 

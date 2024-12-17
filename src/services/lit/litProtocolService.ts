@@ -222,7 +222,8 @@ export default class LitProtocol {
 		privateKey: `0x${string}`,
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		secret: any,
-	) {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	): Promise<any> {
 		if (!this.litNodeClient) {
 			await this.connect(chainId);
 		}
@@ -242,9 +243,9 @@ export default class LitProtocol {
 				parsedJsonData: JSON.parse(secret),
 				sessionSigs,
 			});
-		} catch (error) {
-			console.log("Error decrypting from JSON", error);
-			throw new Error("Failed to decrypt JSON data");
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
+			return { error: true, message: error.message, secret };
 		}
 	}
 }
