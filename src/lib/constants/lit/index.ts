@@ -30,11 +30,11 @@ export const networks = {
 		clientConfig: {
 			alertWhenUnauthorized: false,
 			litNetwork: LitNetwork.Datil,
-			debug: true,
+			debug: false,
 		},
 		contractConfig: {
 			network: LitNetwork.Datil,
-			debug: true,
+			debug: false,
 		},
 		rpc: LIT_RPC.CHRONICLE_YELLOWSTONE,
 	},
